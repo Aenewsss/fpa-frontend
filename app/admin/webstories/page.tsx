@@ -254,7 +254,7 @@ function SortableCard({
                                 <Edit3 className="w-4 h-4 mr-2" /> Editar
                             </Button>
                         </AlertDialogTrigger>
-                        <AlertDialogContent className="md:max-w-[80%] max-w-full">
+                        <AlertDialogContent className="md:max-w-[80%] max-w-full max-h-[90vh] overflow-y-auto">
                             <AlertDialogHeader>
                                 <AlertDialogTitle>Editar Webstory</AlertDialogTitle>
                             </AlertDialogHeader>
