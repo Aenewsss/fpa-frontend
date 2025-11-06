@@ -179,6 +179,9 @@ importers:
       geist:
         specifier: latest
         version: 1.4.2(next@15.2.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.90.0))
+      idb-keyval:
+        specifier: ^6.2.2
+        version: 6.2.2
       immer:
         specifier: latest
         version: 10.1.1
@@ -2387,6 +2390,9 @@ packages:
 
   hyphen@1.10.6:
     resolution: {integrity: sha512-fXHXcGFTXOvZTSkPJuGOQf5Lv5T/R2itiiCVPg9LxAje5D00O0pP83yJShFq5V89Ly//Gt6acj7z8pbBr34stw==}
+
+  idb-keyval@6.2.2:
+    resolution: {integrity: sha512-yjD9nARJ/jb1g+CvD0tlhUHOrJ9Sy0P8T9MF3YaLlHnSRpwPfpTX0XIvpmw3gAJUmEu3FiICLBDPXVwyEvrleg==}
 
   immer@10.1.1:
     resolution: {integrity: sha512-s2MPrmjovJcoMaHtx6K11Ra7oD05NT97w1IC5zpMkT6Atjr7H8LjaDd81iIxUYpMKSRRNMJE703M1Fhr/TctHw==}
@@ -5193,6 +5199,8 @@ snapshots:
   html-escaper@2.0.2: {}
 
   hyphen@1.10.6: {}
+
+  idb-keyval@6.2.2: {}
 
   immer@10.1.1: {}
 

@@ -38,6 +38,7 @@ import { handleImageUpload, MAX_FILE_SIZE } from "@/lib/tiptap-utils"
 import { showToast } from "@/utils/show-toast"
 import ViewPost from "./view-post"
 import api from "@/services/axios"
+import { set } from "idb-keyval"
 
 const formInitialState: CreatePostData = {
   postTitle: "",
@@ -113,8 +114,9 @@ export default function PostsAdminPage() {
       setLoadingSearch(false)
     }
   }
+  console.log(searchQuery)
 
-  const displayedPosts = searchQuery.trim() ? searchResults : orderedPosts
+  const displayedPosts = searchResults.length ? searchResults : orderedPosts
 
   const editor = useEditor({
     immediatelyRender: false,
@@ -181,6 +183,7 @@ export default function PostsAdminPage() {
       showToast({ type: "error", children: "Erro ao salvar matéria" })
     } finally {
       setLoading(false)
+      setShowPostEditor(false)
     }
   }
 
@@ -188,6 +191,7 @@ export default function PostsAdminPage() {
   const handleEdit = (post: any) => {
     window.scrollTo({ top: 0, behavior: "smooth" })
     setEditingPost(post)
+    setShowPostEditor(true)
     setForm({
       ...formInitialState,
       postTitle: post.postTitle,
@@ -290,7 +294,10 @@ export default function PostsAdminPage() {
         </CardContent>
         <CardFooter className="flex justify-between">
           {editingPost && (
-            <Button variant="secondary" onClick={() => setEditingPost(null)}>
+            <Button variant="secondary" onClick={() => {
+              setEditingPost(null)
+              setShowPostEditor(false)
+            }}>
               Cancelar Edição
             </Button>
           )}

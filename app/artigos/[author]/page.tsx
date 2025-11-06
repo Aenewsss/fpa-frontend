@@ -121,7 +121,7 @@ export default function Page({ params }: PageProps) {
                         </div>
                 }
 
-                <LastNews isHome={false} />
+                <LastNews isHome={false} authorId={author} />
             </div>
             <Footer />
         </div >

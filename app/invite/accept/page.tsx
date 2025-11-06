@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import api from "@/services/axios"
 import { showToast } from "@/utils/show-toast"
+import { ToastContainer } from "react-toastify"
 
 export default function AcceptInvitePage() {
     const router = useRouter()
@@ -35,13 +36,22 @@ export default function AcceptInvitePage() {
                 lastName,
                 password,
                 repeatPassword,
+            }).catch((error) => {
+                if (error.response && error.response.data && error.response.data.message) {
+                    throw new Error(error.response.data.message)
+                } else {
+                    throw new Error("Erro ao aceitar convite. Tente novamente.")
+                }
             })
 
             showToast({ children: "Convite aceito com sucesso! Você já pode fazer login." })
-            router.push("/login")
+
+            setTimeout(() => {
+                router.push("/login")
+            }, 1000);
         } catch (err: any) {
             console.error(err)
-            showToast({ children: "Erro ao aceitar convite. Tente novamente." })
+            showToast({ children: err.message, type: 'error' })
         } finally {
             setIsSubmitting(false)
         }
@@ -142,6 +152,7 @@ export default function AcceptInvitePage() {
                     </CardContent>
                 </Card>
             </div>
+            <ToastContainer />
         </div>
     )
 }

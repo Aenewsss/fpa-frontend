@@ -24,7 +24,6 @@ export default function Page() {
                 <h1 className="text-4xl font-bold mb-4 text-primary">Revista FPA</h1>
 
                 <div className="w-full overflow-auto">
-                    {/* {magazineUrl ? <iframe allowFullScreen src={magazineUrl} width="100%" height="860px" /> : 'Carregando...'} */}
                     {magazineUrl && <PDFMagazine pdfUrl={magazineUrl} />}
                     <a
                         href={magazineUrl}

@@ -23,7 +23,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   const { user, logout } = useAuthStore()
   const { totalCounts, fetchTotalCounts } = useContentStore()
 
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(true)
 
   const sidebarItems = [
     { icon: BarChart3, label: "Dashboard", href: "/admin" },
@@ -151,15 +151,6 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             </div> */}
           </div>
 
-          <div className="flex items-center gap-2">
-            <Button size="sm" className="gap-2 cursor-pointer" onClick={() => router.push("/admin/posts")}>
-              <Plus className="h-4 w-4" />
-              Nova matéria
-            </Button>
-            {/* <Button variant="ghost" size="icon">
-              <Bell className="h-4 w-4" />
-            </Button> */}
-          </div>
         </header>
 
         {/* Page Content */}

@@ -16,10 +16,11 @@ interface IProps {
     category?: string
     internalPage?: boolean
     isHome?: boolean
+    authorId?: any
 }
 
-export default function LastNews({ category, internalPage, isHome = true }: IProps) {
-    const { posts, fetchPosts, postsPagination, postsLoading, hasMore } = useContentStore()
+export default function LastNews({ category, internalPage, isHome = true, authorId }: IProps) {
+    const { posts, fetchPosts, postsPagination, postsLoading, hasMore, currentPost } = useContentStore()
     const isLoading = !posts || posts.length === 0
 
     const newsNoFeatured = isHome ? posts.filter(post => !post.isFeatured) : posts
@@ -33,6 +34,11 @@ export default function LastNews({ category, internalPage, isHome = true }: IPro
         fetchInstagramPosts()
         fetchPauta()
     }, []);
+
+    useEffect(() => {
+        if (!currentPost) return;
+        fetchPosts({ categoryId: category, currentPostId: currentPost.id })
+    }, [category]);
 
     async function fetchPauta() {
         getPauta()
@@ -51,7 +57,9 @@ export default function LastNews({ category, internalPage, isHome = true }: IPro
     function loadMorePosts(loadMore: boolean) {
         setIsLoadingMore(true)
         try {
-            fetchPosts({ page: postsPagination.page == 1 ? 3 : postsPagination.page + 1, limit: 5, categoryId: category, loadMore })
+            authorId
+                ? fetchPosts({ categoryId: "articles", authorId, page: postsPagination.page == 1 ? 3 : postsPagination.page + 1, limit: 5, loadMore })
+                : fetchPosts({ page: postsPagination.page == 1 ? 3 : postsPagination.page + 1, limit: 5, categoryId: category, loadMore })
         } finally {
             setTimeout(() => {
                 setIsLoadingMore(false)
@@ -67,7 +75,7 @@ export default function LastNews({ category, internalPage, isHome = true }: IPro
 
     return (
         <section className={`py-8 ${isHome ? `md:px-4` : ''} ${internalPage ? "mt-24" : ""}`}>
-            <div className={`${internalPage ? `max-w-[1000px]` : `max-w-[1300px]`} mx-auto`}>
+            <div className={`${internalPage ? `max-w-[800px]` : `max-w-[1300px]`} mx-auto`}>
                 <div className="flex gap-8 flex-wrap">
                     {/* Recent News - 75% width */}
                     {newsNoFeatured.length > 4 && <div className="flex-1 lg:w-3/4 w-full bg-white h-fit p-4 rounded-2xl shadow-md" ref={containerRef}>

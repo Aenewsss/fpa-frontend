@@ -37,6 +37,8 @@ export default function Page({ params }: PageProps) {
         }
     }
 
+    console.log(currentPost);
+
     if (loading) return <LoadingPage />;
 
     // ✅ If no post found
@@ -60,7 +62,7 @@ export default function Page({ params }: PageProps) {
                 (!currentPost || currentPost.id != currentPostId)
                     ? <PostPageSkeleton />
                     : <div>
-                        <div className='max-w-[1000px] mx-auto px-4 my-10'>
+                        <div className='max-w-[800px] mx-auto px-4 my-10'>
                             <h1 className="lg:text-5xl text-4xl font-bold mb-4">{currentPost?.postTitle}</h1>
                             <h2 className="text-2xl text-[#000000cb]  mb-4">{currentPost?.summary}</h2>
 
@@ -71,7 +73,7 @@ export default function Page({ params }: PageProps) {
                             <img loading="lazy"
                                 src={currentPost.thumbnailUrl}
                                 alt={currentPost.postTitle}
-                                className="rounded-lg mb-6 w-full max-h-[400px] object-cover"
+                                className="rounded-lg mb-6 w-full h-full"
                             />
 
                             <article>
