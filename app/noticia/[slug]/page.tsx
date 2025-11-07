@@ -79,7 +79,7 @@ export default function Page({ params }: PageProps) {
                             <article>
                                 {typeof currentPost?.postContent == 'object'
                                     ? <ViewPost postContent={currentPost.postContent} />
-                                    : <div className='text-lg' dangerouslySetInnerHTML={{ __html: currentPost?.postContent || '' }}></div>
+                                    : <div className='text-lg max-w-full overflow-hidden' dangerouslySetInnerHTML={{ __html: currentPost?.postContent || '' }}></div>
                                 }
                             </article>
 
