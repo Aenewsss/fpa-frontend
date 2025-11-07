@@ -57,6 +57,7 @@ body,
 .simple-editor-wrapper {
   height: 100vh;
   overflow: auto;
+  z-index: -10;
 }
 
 .simple-editor-content {

@@ -331,7 +331,7 @@ export default function PostsAdminPage() {
       {(!editingPost && !showPostEditor) && <RemovedPostsSection removedPosts={removedPosts} onRestore={restorePost} showRemoved={showRemoved} />}
 
       {/* 🔍 Search bar with button */}
-      {(!showRemoved && !editingPost && !showPostEditor) && <div className="flex items-center gap-2 mb-6 bg-white p-4 shadow-md rounded-lg w-full">
+      {(!showRemoved && !editingPost && !showPostEditor) && <div className="flex -z-10 relative items-center gap-2 mb-6 bg-white p-4 shadow-md rounded-lg w-full">
         <div className="relative flex-grow">
           <Search className="absolute left-3 top-3.5 h-4 w-4 text-gray-400" />
           <Input

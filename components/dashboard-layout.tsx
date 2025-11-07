@@ -56,7 +56,7 @@ export function DashboardLayout() {
     <div className="min-h-screen bg-transparent lg:relative fixed">
       {/* Sidebar */}
       <aside
-        className={`w-fit z-50 bg-sidebar lg:relative fixed border-r border-sidebar-border transform transition-transform duration-300 ease-in-out ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        className={`w-fit z-[99999999999999] bg-sidebar lg:bg-transparent lg:relative fixed border-r border-sidebar-border transform transition-transform duration-300 ease-in-out ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
           } lg:translate-x-0`}
       >
         <div className="flex h-full flex-col">
