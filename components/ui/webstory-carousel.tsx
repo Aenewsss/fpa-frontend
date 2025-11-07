@@ -1,58 +1,82 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Image from "next/image"
-import WebstoryViewer from "./webstory-viewer"
-import { WebStory } from "@/services/webstories"
-import { ContentSlider } from "./content-slider"
+import { useState } from "react";
+import Image from "next/image";
+import WebstoryViewer from "./webstory-viewer";
+import { WebStory } from "@/services/webstories";
+import { ContentSlider } from "./content-slider";
 
 interface IProps {
-    webstories: WebStory[]
+  webstories: WebStory[];
 }
 
 export default function WebstoriesCarousel({ webstories }: IProps) {
-    const [selectedStory, setSelectedStory] = useState<WebStory | null>(null)
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const [startFromEnd, setStartFromEnd] = useState(false);
 
-    return (
-        <section id="webstories" className="my-12 bg-white rounded-2xl shadow-md p-4">
-            <div className="space-y-4">
-                <div className="flex justify-between items-center">
-                    <div>
-                        <h2 className="text-3xl md:text-3xl font-bold text-[#1C9658]">Webstories</h2>
-                    </div>
-                </div>
+  const handleNextStory = () => {
+    if (selectedIndex === null) return;
+    const nextIndex = selectedIndex + 1;
+    if (nextIndex < webstories.length) {
+      setSelectedIndex(nextIndex);
+      setStartFromEnd(false);
+    } else {
+      setSelectedIndex(null);
+    }
+  };
 
-                <ContentSlider perView={4}>
-                    {webstories.map((story) => (
-                        <div
-                            key={story.id}
-                            className="flex-shrink-0 "
-                        >
-                            <div
-                                className="lg:w-[200px] lg:h-[340px] w-full h-full object-contain rounded-xl overflow-hidden border-2 border-[#1C9658] cursor-pointer"
-                                onClick={() => setSelectedStory(story)}
-                            >
-                                <Image
-                                    src={story.slides?.[0]?.imageUrl || "/placeholder.jpg"}
-                                    alt={story.title}
-                                    width={100}
-                                    height={180}
-                                    className="object-cover w-full h-full"
-                                    unoptimized
-                                />
-                            </div>
-                            {/* <p className="text-xs text-center mt-2 w-[100px] truncate">{story.title}</p> */}
-                        </div>
-                    ))}
-                </ContentSlider>
+  const handlePrevStory = () => {
+    if (selectedIndex === null) return;
+    const prevIndex = selectedIndex - 1;
+    if (prevIndex >= 0) {
+      setSelectedIndex(prevIndex);
+      setStartFromEnd(true); // 👉 força começar do último slide
+    } else {
+      setSelectedIndex(null);
+    }
+  };
 
+  return (
+    <section id="webstories" className="my-12 bg-white rounded-2xl shadow-md p-4">
+      <div className="space-y-4">
+        <div className="flex justify-between items-center">
+          <h2 className="text-3xl font-bold text-[#1C9658]">Webstories</h2>
+        </div>
+
+        <ContentSlider perView={4}>
+          {webstories.map((story, idx) => (
+            <div key={story.id} className="flex-shrink-0">
+              <div
+                className="lg:w-[200px] lg:h-[340px] w-full h-full object-contain rounded-xl overflow-hidden border-2 border-[#1C9658] cursor-pointer"
+                onClick={() => {
+                  setSelectedIndex(idx);
+                  setStartFromEnd(false);
+                }}
+              >
+                <Image
+                  src={story.slides?.[0]?.imageUrl || "/placeholder.jpg"}
+                  alt={story.title}
+                  width={100}
+                  height={180}
+                  className="object-cover w-full h-full"
+                  unoptimized
+                />
+              </div>
             </div>
+          ))}
+        </ContentSlider>
+      </div>
 
-            <WebstoryViewer
-                open={!!selectedStory}
-                onClose={() => setSelectedStory(null)}
-                webstory={selectedStory}
-            />
-        </section>
-    )
+      {selectedIndex !== null && (
+        <WebstoryViewer
+          open={selectedIndex !== null}
+          onClose={() => setSelectedIndex(null)}
+          webstory={webstories[selectedIndex]}
+          onNextStory={handleNextStory}
+          onPrevStory={handlePrevStory}
+          startFromEnd={startFromEnd} // 👈 passa a flag
+        />
+      )}
+    </section>
+  );
 }

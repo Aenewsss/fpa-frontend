@@ -1,4 +1,3 @@
-// components/WebstoryViewer.tsx
 'use client'
 
 import { Fragment, useEffect, useState, useRef } from 'react'
@@ -11,27 +10,39 @@ import { WebStory } from '@/services/webstories'
 interface Props {
   open: boolean
   onClose: () => void
+  onNextStory?: () => void
+  onPrevStory?: () => void
   webstory: WebStory | null
+  startFromEnd?: boolean
 }
 
-const SLIDE_DURATION = 10000 // 10 seconds
+const SLIDE_DURATION = 10000 // 10s
 
-export default function WebstoryViewer({ open, onClose, webstory }: Props) {
+export default function WebstoryViewer({
+  open,
+  onClose,
+  onNextStory,
+  onPrevStory,
+  webstory,
+  startFromEnd = false
+}: Props) {
   const [index, setIndex] = useState(0)
   const progressRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (open) setIndex(0)
-  }, [open])
+    if (open && webstory) {
+      // 👇 se veio do "voltar", começa do último slide
+      if (startFromEnd) setIndex(webstory.slides.length - 1)
+      else setIndex(0)
+    }
+  }, [open, webstory, startFromEnd])
 
   useEffect(() => {
     if (!open || !webstory) return
 
-    const timer = setTimeout(() => {
-      nextSlide()
-    }, SLIDE_DURATION)
+    const timer = setTimeout(() => nextSlide(), SLIDE_DURATION)
 
-    // Reset & animate progress bar
+    // progress bar
     if (progressRef.current) {
       progressRef.current.style.transition = 'none'
       progressRef.current.style.width = '0%'
@@ -48,24 +59,22 @@ export default function WebstoryViewer({ open, onClose, webstory }: Props) {
 
   const nextSlide = () => {
     if (!webstory) return
-    if (index < webstory.slides.length - 1) {
-      setIndex(index + 1)
-    } else {
-      onClose()
-    }
+    if (index < webstory.slides.length - 1) setIndex(index + 1)
+    else onNextStory?.()
   }
 
   const prevSlide = () => {
+    if (!webstory) return
     if (index > 0) setIndex(index - 1)
+    else onPrevStory?.() // chama o anterior
   }
 
   if (!webstory) return null
 
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-[9999999999999999]" onClose={onClose}>
-        <div className="fixed inset-0 backdrop-blur-2xl" />
-        <div className="fixed inset-0 bg-black/80" />
+      <Dialog as="div" className="relative z-[999999999999]" onClose={onClose}>
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-2xl" />
         <div className="fixed inset-0 flex items-center justify-center">
           <Dialog.Panel className="relative">
             {/* Botão fechar */}
@@ -76,9 +85,8 @@ export default function WebstoryViewer({ open, onClose, webstory }: Props) {
               <X className="w-6 h-6" />
             </button>
 
-            {/* Container da imagem */}
+            {/* Slides */}
             <div className="relative aspect-[9/16] h-[90vh] max-h-[90vh]">
-              {/* Progress bar */}
               <div className="absolute top-0 left-0 w-full h-1 bg-white/20 z-20">
                 <div ref={progressRef} className="h-full bg-white w-0"></div>
               </div>
@@ -100,14 +108,12 @@ export default function WebstoryViewer({ open, onClose, webstory }: Props) {
                     className="object-cover rounded-lg"
                     priority
                   />
-
-                  {/* Texto sobreposto */}
                   {webstory.slides[index].text && (
                     <motion.div
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.3, duration: 0.5 }}
-                      className="absolute bottom-6 left-4 right-4 text-white lg:text-[1vw] text-xl font-medium bg-black/50 px-4 py-2 rounded-lg"
+                      className="absolute bottom-6 left-4 right-4 text-white text-xl font-medium bg-black/50 px-4 py-2 rounded-lg"
                     >
                       {webstory.slides[index].text}
                     </motion.div>
@@ -115,19 +121,25 @@ export default function WebstoryViewer({ open, onClose, webstory }: Props) {
                 </motion.div>
               </AnimatePresence>
 
-              {/* Navegação lateral */}
+              {/* Navegação */}
               <div className="absolute inset-y-0 left-2 flex items-center z-20">
                 <button
-                  onClick={(e) => { e.stopPropagation(); prevSlide() }}
-                  className="text-white cursor-pointer hover:scale-110 transition"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    prevSlide()
+                  }}
+                  className="text-white hover:scale-110 transition"
                 >
                   <ChevronLeft className="w-8 h-8" />
                 </button>
               </div>
               <div className="absolute inset-y-0 right-2 flex items-center z-20">
                 <button
-                  onClick={(e) => { e.stopPropagation(); nextSlide() }}
-                  className="text-white cursor-pointer hover:scale-110 transition"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    nextSlide()
+                  }}
+                  className="text-white hover:scale-110 transition"
                 >
                   <ChevronRight className="w-8 h-8" />
                 </button>

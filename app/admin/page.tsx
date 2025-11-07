@@ -33,7 +33,7 @@ export default function AdminDashboard() {
   ]
 
   return (
-    <div className="space-y-6 mt-4">
+    <div className="space-y-6 mx-4 flex-1">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-foreground">Bem-vindo(a), {user?.name || "Admin"}</h1>
@@ -75,51 +75,6 @@ export default function AdminDashboard() {
         </Card>
 
       </div>
-
-      {/* Content Overview */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Eye className="h-5 w-5" />
-            Visão geral
-          </CardTitle>
-          <CardDescription>Summary of your content management system</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid gap-4 md:grid-cols-3">
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">Matérias publicadas</span>
-                <span className="text-sm font-medium">{contentOverview?.totalPublishedPosts || 0}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">Matérias em rascunho</span>
-                <span className="text-sm font-medium">{contentOverview?.totalDraftPosts || 0}</span>
-              </div>
-            </div>
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">Banners ativos</span>
-                <span className="text-sm font-medium">{contentOverview?.activeBanners || 0}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">Total Tags</span>
-                <span className="text-sm font-medium">{contentOverview?.totalTags || 0}</span>
-              </div>
-            </div>
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">Web Stories</span>
-                <span className="text-sm font-medium">{contentOverview?.webStories || 0}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">Categorias</span>
-                <span className="text-sm font-medium">{contentOverview?.totalCategories || 0}</span>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
     </div>
   )
 }

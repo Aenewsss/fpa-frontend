@@ -38,7 +38,7 @@ export default function AdminLayout({
     return null
   }
 
-  return <DashboardLayout>
+  return <main>
     <Script
       src="https://www.googletagmanager.com/gtag/js?id=G-K56PQX18ME"
       strategy="afterInteractive"
@@ -52,8 +52,13 @@ export default function AdminLayout({
           gtag('config', 'G-K56PQX18ME');
         `}
     </Script>
-    {children}
+    <div className="flex gap-4">
+      <DashboardLayout />
+      <div className="mt-20 w-full">
+        {children}
+      </div>
+    </div>
     <ToastContainer position="top-right" autoClose={false} />
     <Loading />
-  </DashboardLayout>
+  </main>
 }

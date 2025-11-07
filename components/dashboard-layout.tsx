@@ -12,11 +12,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { FileText, ImageIcon, Video, Tag, FolderOpen, BarChart3, Settings, LogOut, Menu, Search, Plus, UserCircle2, FocusIcon, ChevronsLeft, ChevronsRight, VideoIcon, Book, Mail, BookDashed, Videotape, BookText, Contact, Handshake, User2Icon, MailOpen } from "lucide-react"
 import { useContentStore } from "@/lib/content-store"
 
-interface DashboardLayoutProps {
-  children: React.ReactNode
-}
-
-export function DashboardLayout({ children }: DashboardLayoutProps) {
+export function DashboardLayout() {
   const router = useRouter()
   const pathname = usePathname()
 
@@ -57,10 +53,10 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-transparent lg:relative fixed">
       {/* Sidebar */}
       <aside
-        className={`w-fit fixed inset-y-0 left-0 z-50 bg-sidebar border-r border-sidebar-border transform transition-transform duration-300 ease-in-out ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        className={`w-fit z-50 bg-sidebar lg:relative fixed border-r border-sidebar-border transform transition-transform duration-300 ease-in-out ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
           } lg:translate-x-0`}
       >
         <div className="flex h-full flex-col">
@@ -133,30 +129,13 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       </aside>
 
       {/* Main Content */}
-      <div className={sidebarOpen ? "lg:pl-64" : "lg:pl-32"}>
+      <div>
         {/* Header */}
-        <header className="sticky top-0 z-40 flex h-16 items-center gap-4 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-6">
+        <header className="sticky top-0 z-40 flex h-16 items-center gap-4 border-b px-6">
           <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setSidebarOpen(!sidebarOpen)}>
             <Menu className="h-5 w-5" />
           </Button>
-
-          <div className="flex-1 flex items-center gap-4">
-            {/* <div className="relative flex-1 max-w-md">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-              <input
-                type="search"
-                placeholder="Search posts, categories..."
-                className="w-full rounded-lg border border-input bg-background pl-10 pr-4 py-2 text-sm focus:border-ring focus:outline-none focus:ring-2 focus:ring-ring/20"
-              />
-            </div> */}
-          </div>
-
         </header>
-
-        {/* Page Content */}
-        <main className="p-6">
-          {children}
-        </main>
       </div>
     </div>
   )

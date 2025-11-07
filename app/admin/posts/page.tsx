@@ -12,6 +12,7 @@ import {
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
+  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
@@ -19,7 +20,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { LabelInputFile } from "@/components/ui/label-input-file"
 import { PostStatusEnum } from "@/enums/post"
-import { CreatePostData, getPosts } from "@/services/posts"
+import { CreatePostData, getPost, getPosts } from "@/services/posts"
 import { MultiSelect } from "@/components/ui/multi-select"
 import { TipTapEditor } from "./tiptap-editor"
 import { useEditor } from "@tiptap/react"
@@ -101,8 +102,8 @@ export default function PostsAdminPage() {
       return
     }
 
+    setLoadingSearch(true)
     try {
-      setLoadingSearch(true)
       const result = await getPosts({ search: searchQuery })
       console.log(result)
 
@@ -114,9 +115,10 @@ export default function PostsAdminPage() {
       setLoadingSearch(false)
     }
   }
-  console.log(searchQuery)
 
-  const displayedPosts = searchResults.length ? searchResults : orderedPosts
+  const displayedPosts = orderedPosts.filter(el => el.postTitle.toLowerCase().includes(searchQuery)).length
+    ? orderedPosts.filter(el => el.postTitle.toLowerCase().includes(searchQuery))
+    : searchResults.filter(el => el.postTitle.toLowerCase().includes(searchQuery))
 
   const editor = useEditor({
     immediatelyRender: false,
@@ -148,8 +150,14 @@ export default function PostsAdminPage() {
     ],
   })
 
+  async function getPosts1() {
+    setLoadingSearch(true)
+    const data = await fetchPosts({ limit: 100 })
+    setLoadingSearch(false)
+  }
+
   useEffect(() => {
-    fetchPosts({ limit: 100 })
+    getPosts1()
     fetchTags()
     fetchCategories()
   }, [])
@@ -293,12 +301,12 @@ export default function PostsAdminPage() {
           )}
         </CardContent>
         <CardFooter className="flex justify-between">
-          {editingPost && (
+          {(editingPost || showPostEditor) && (
             <Button variant="secondary" onClick={() => {
               setEditingPost(null)
               setShowPostEditor(false)
             }}>
-              Cancelar Edição
+              {editingPost ? 'Cancelar Edição' : 'Fechar Editor'}
             </Button>
           )}
           <Button onClick={handleSave}>
@@ -308,7 +316,7 @@ export default function PostsAdminPage() {
         </CardFooter>
       </Card>}
 
-      <div className="flex gap-4">
+      {(!editingPost && !showPostEditor) && <div className="flex gap-4">
         <Button onClick={() => setShowPostEditor(true)}>Adicionar matéria</Button>
         <Button
           className="flex items-center justify-between bg-red-400 text-white hover:bg-red-500"
@@ -319,11 +327,11 @@ export default function PostsAdminPage() {
             <Trash2 width={16} className="inline-block ml-2 " />
           </span>
         </Button>
-      </div>
-      <RemovedPostsSection removedPosts={removedPosts} onRestore={restorePost} showRemoved={showRemoved} />
+      </div>}
+      {(!editingPost && !showPostEditor) && <RemovedPostsSection removedPosts={removedPosts} onRestore={restorePost} showRemoved={showRemoved} />}
 
       {/* 🔍 Search bar with button */}
-      {!showRemoved && <div className="flex items-center gap-2 mb-6 bg-white p-4 shadow-md rounded-lg w-full">
+      {(!showRemoved && !editingPost && !showPostEditor) && <div className="flex items-center gap-2 mb-6 bg-white p-4 shadow-md rounded-lg w-full">
         <div className="relative flex-grow">
           <Search className="absolute left-3 top-3.5 h-4 w-4 text-gray-400" />
           <Input
@@ -341,7 +349,7 @@ export default function PostsAdminPage() {
       </div>}
 
       {/* 📰 Listagem */}
-      {!showRemoved && <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      {(!showRemoved && !editingPost && !showPostEditor) && <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {loadingSearch ? (
           <p className="text-gray-500 col-span-full text-center py-10">Carregando...</p>
         ) : displayedPosts?.length > 0 ? (
@@ -363,28 +371,78 @@ export default function PostsAdminPage() {
   )
 }
 
-function PostCard({ post, onDelete, onEdit }: { post: any; onDelete: () => void; onEdit: () => void }) {
+interface PostCardProps {
+  post: any;
+  onDelete: () => void;
+  onEdit: () => void;
+}
+
+export function PostCard({ post, onDelete, onEdit }: PostCardProps) {
+  const [open, setOpen] = useState(false);
+
+  const handleConfirmDelete = () => {
+    setOpen(false);
+    onDelete();
+  };
+
   return (
     <Card className="p-0">
       <CardContent className="flex flex-col gap-4 flex-1 pt-4">
         <p className="font-semibold text-sm">{post.postTitle}</p>
+
         {post.thumbnailUrl && (
-          <img loading="lazy" src={post.thumbnailUrl} alt="thumbnail" className="w-full h-40 object-cover rounded" />
+          <img
+            loading="lazy"
+            src={post.thumbnailUrl}
+            alt="thumbnail"
+            className="w-full h-40 object-cover rounded"
+          />
         )}
-        {post.summary && <p className="text-sm text-muted-foreground">{post.summary}</p>}
+
+        {post.summary && (
+          <p className="text-sm text-muted-foreground">{post.summary}</p>
+        )}
       </CardContent>
+
       <CardFooter className="flex justify-between bg-[rgba(245,245,245)] py-2">
         <Button size="sm" variant="outline" onClick={onEdit}>
           <Edit3 className="w-4 h-4 mr-2" />
           Editar
         </Button>
-        <Button size="sm" variant="destructive" onClick={onDelete}>
-          <Trash2 className="w-4 h-4" />
-          Excluir
-        </Button>
+
+        {/* 🔥 AlertDialog de confirmação */}
+        <AlertDialog open={open} onOpenChange={setOpen}>
+          <AlertDialogTrigger asChild>
+            <Button size="sm" variant="destructive">
+              <Trash2 className="w-4 h-4 mr-2" />
+              Excluir
+            </Button>
+          </AlertDialogTrigger>
+
+          <AlertDialogContent className="max-w-md">
+            <AlertDialogHeader>
+              <AlertDialogTitle>Excluir post</AlertDialogTitle>
+              <AlertDialogDescription>
+                Tem certeza de que deseja excluir o post{" "}
+                <span className="font-semibold">“{post.postTitle}”</span>?<br />
+                Essa ação não poderá ser desfeita.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancelar</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={handleConfirmDelete}
+                className="bg-destructive text-white hover:bg-destructive/90"
+              >
+                Confirmar exclusão
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </CardFooter>
     </Card>
-  )
+  );
 }
 
 function RemovedPostsSection({
@@ -400,6 +458,11 @@ function RemovedPostsSection({
     <div >
       {showRemoved && (
         <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          {removedPosts.length === 0 && (
+            <p className="text-gray-500 col-span-full text-center py-10">
+              Nenhuma matéria removida.
+            </p>
+          )}
           {removedPosts.map((post: any) => (
             <Card key={post.id} className="border border-red-300">
               <CardContent className="p-4">

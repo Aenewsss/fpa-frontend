@@ -36,9 +36,29 @@ import Newsletter from '@/components/newsletter'
 import MinutoFPA from '@/components/minuto-fpa'
 import { LazyYouTube } from '@/components/lazy-youtube'
 import Image from 'next/image'
+import { usePathname } from 'next/navigation'
 
 export default function Home() {
   const ref = useRef<any>(null);
+
+  const pathname = usePathname();
+  const [hash, setHash] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Captura o hash da URL no cliente
+    const handleHash = () => setHash(window.location.hash);
+    handleHash(); // captura inicial
+    window.addEventListener("hashchange", handleHash);
+    return () => window.removeEventListener("hashchange", handleHash);
+  }, []);
+
+  useEffect(() => {
+    if(!hash) return
+    if (hash.includes("#")) {
+      document.querySelector(hash)?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [hash]);
+
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -76,6 +96,10 @@ export default function Home() {
   useEffect(() => {
     fetchMagazineUrl()
   }, []);
+
+  useEffect(() => {
+    console.log(pathname)
+  }, [pathname]);
 
   async function fetchTweets() {
     try {

@@ -59,7 +59,7 @@ export default function LastNews({ category, internalPage, isHome = true, author
         try {
             authorId
                 ? fetchPosts({ categoryId: "articles", authorId, page: postsPagination.page == 1 ? 3 : postsPagination.page + 1, limit: 5, loadMore })
-                : fetchPosts({ page: postsPagination.page == 1 ? 3 : postsPagination.page + 1, limit: 5, categoryId: category, loadMore })
+                : fetchPosts({ page: postsPagination.page == 1 ? 4 : postsPagination.page + 1, limit: 5, categoryId: category, loadMore })
         } finally {
             setTimeout(() => {
                 setIsLoadingMore(false)
