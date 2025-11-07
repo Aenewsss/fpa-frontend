@@ -103,6 +103,8 @@ export default function LastNews({ category, internalPage, isHome = true, author
                                             <div className="flex flex-col gap-2">
                                                 <span style={{ background: post.postCategory.color }} className='text-white p-1 rounded-md text-center w-fit md:px-3 px-2 uppercase md:text-sm text-[10px]'>{post.postCategory.name}</span>
                                                 <h3 className="md:text-2xl font-semibold text-gray-900 mb-2">{post.postTitle}</h3>
+                                                <h4 className="mb-2 text-[#575757]">{post.summary}</h4>
+                                                <h5 className="mb-2 text-[#afafaf]">{new Date(post.createdAt).toLocaleDateString('pt-BR')}</h5>
                                             </div>
                                         </article>
                                         {(index != arr.length - 1) && <hr className="mt-10" />}

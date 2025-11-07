@@ -105,7 +105,6 @@ export default function PostsAdminPage() {
     setLoadingSearch(true)
     try {
       const result = await getPosts({ search: searchQuery })
-      console.log(result)
 
       setSearchResults(result || [])
     } catch (err) {
@@ -212,7 +211,8 @@ export default function PostsAdminPage() {
       thumbnailFile: null,
       isFeatured: post.isFeatured,
     })
-    editor?.commands.setContent(post.postContent || {})
+    console.log(post.postContent)
+    editor?.commands.setContent(post.postContent)
   }
 
   return (
@@ -331,7 +331,7 @@ export default function PostsAdminPage() {
       {(!editingPost && !showPostEditor) && <RemovedPostsSection removedPosts={removedPosts} onRestore={restorePost} showRemoved={showRemoved} />}
 
       {/* 🔍 Search bar with button */}
-      {(!showRemoved && !editingPost && !showPostEditor) && <div className="flex -z-10 relative items-center gap-2 mb-6 bg-white p-4 shadow-md rounded-lg w-full">
+      {(!showRemoved && !editingPost && !showPostEditor) && <div className="flex md:z-0 -z-10 relative items-center gap-2 mb-6 bg-white p-4 shadow-md rounded-lg w-full">
         <div className="relative flex-grow">
           <Search className="absolute left-3 top-3.5 h-4 w-4 text-gray-400" />
           <Input

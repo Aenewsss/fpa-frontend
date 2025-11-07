@@ -178,7 +178,7 @@ export function TipTapEditor(props: { editor: Editor | null }) {
     }, [isMobile, mobileView])
 
     return (
-        <div className="simple-editor-wrapper">
+        <div className="simple-editor-wrapper md:z-10 -z-10">
             <EditorContext.Provider value={{ editor: props.editor }}>
                 <Toolbar
                     ref={toolbarRef}
