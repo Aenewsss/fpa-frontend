@@ -1,11 +1,11 @@
-'use client'
-
 import { Fragment, useEffect, useState, useRef } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { X, ChevronRight, ChevronLeft } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
 import { WebStory } from '@/services/webstories'
+
+const SLIDE_DURATION = 10000 // 10s
 
 interface Props {
   open: boolean
@@ -16,8 +16,6 @@ interface Props {
   startFromEnd?: boolean
 }
 
-const SLIDE_DURATION = 10000 // 10s
-
 export default function WebstoryViewer({
   open,
   onClose,
@@ -27,13 +25,15 @@ export default function WebstoryViewer({
   startFromEnd = false
 }: Props) {
   const [index, setIndex] = useState(0)
+  const [progressKey, setProgressKey] = useState(0) // 👈 força reset da barra
   const progressRef = useRef<HTMLDivElement>(null)
 
+  // Reinicia índice e progresso ao trocar de story group
   useEffect(() => {
     if (open && webstory) {
-      // 👇 se veio do "voltar", começa do último slide
       if (startFromEnd) setIndex(webstory.slides.length - 1)
       else setIndex(0)
+      setProgressKey((prev) => prev + 1) // 👈 força re-render das barras
     }
   }, [open, webstory, startFromEnd])
 
@@ -41,18 +41,6 @@ export default function WebstoryViewer({
     if (!open || !webstory) return
 
     const timer = setTimeout(() => nextSlide(), SLIDE_DURATION)
-
-    // progress bar
-    if (progressRef.current) {
-      progressRef.current.style.transition = 'none'
-      progressRef.current.style.width = '0%'
-      requestAnimationFrame(() => {
-        if (progressRef.current) {
-          progressRef.current.style.transition = `width ${SLIDE_DURATION}ms linear`
-          progressRef.current.style.width = '100%'
-        }
-      })
-    }
 
     return () => clearTimeout(timer)
   }, [index, open, webstory])
@@ -66,14 +54,14 @@ export default function WebstoryViewer({
   const prevSlide = () => {
     if (!webstory) return
     if (index > 0) setIndex(index - 1)
-    else onPrevStory?.() // chama o anterior
+    else onPrevStory?.()
   }
 
   if (!webstory) return null
 
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-[999999999999]" onClose={onClose}>
+      <Dialog as="div" className="relative z-[9999999999999]" onClose={onClose}>
         <div className="fixed inset-0 bg-black/80 backdrop-blur-2xl" />
         <div className="fixed inset-0 flex items-center justify-center">
           <Dialog.Panel className="relative">
@@ -85,12 +73,29 @@ export default function WebstoryViewer({
               <X className="w-6 h-6" />
             </button>
 
-            {/* Slides */}
             <div className="relative aspect-[9/16] h-[90vh] max-h-[90vh]">
-              <div className="absolute top-0 left-0 w-full h-1 bg-white/20 z-20">
-                <div ref={progressRef} className="h-full bg-white w-0"></div>
+
+              {/* 🔹 Barras de progresso (resetam com progressKey) */}
+              <div
+                key={progressKey}
+                className="absolute top-4 left-0 w-full px-3 flex gap-1 z-30"
+              >
+                {webstory.slides.map((_, i) => (
+                  <div key={i} className="flex-1 bg-white/30 h-1 rounded overflow-hidden">
+                    <div
+                      ref={i === index ? progressRef : null}
+                      className={`h-full bg-white transition-all ${i < index
+                          ? 'w-full' // ✅ já passou
+                          : i === index
+                            ? 'w-0 animate-progress' // ✅ anima a barra atual
+                            : 'w-0' // ✅ futuros slides (ainda não vistos)
+                        }`}
+                    />
+                  </div>
+                ))}
               </div>
 
+              {/* Slide atual */}
               <AnimatePresence mode="wait">
                 <motion.div
                   key={index}

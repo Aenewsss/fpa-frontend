@@ -95,10 +95,9 @@ export default function LastNews({ category, internalPage, isHome = true, author
                                     <Link key={index + post.id} href={`/noticia/${post.id}`}>
                                         <article className="flex md:flex-row flex-col gap-8" key={post.id}>
                                             <img loading="lazy"
-                                                // src={post.thumbnailUrl || "/placeholder.svg"}
                                                 src={`/api/cache/image?url=${encodeURIComponent(post.thumbnailUrl)}`}
                                                 alt={post.postTitle}
-                                                className="lg:w-[460px] lg:min-w-[460px] md:w-[400px] h-[300px] rounded-lg object-cover sm:h-[320px]"
+                                                className="last-news-img"
                                             />
                                             <div className="flex flex-col gap-2">
                                                 <span style={{ background: post.postCategory.color }} className='text-white p-1 rounded-md text-center w-fit md:px-3 px-2 uppercase md:text-sm text-[10px]'>{post.postCategory.name}</span>

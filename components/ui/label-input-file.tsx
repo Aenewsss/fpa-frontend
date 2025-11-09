@@ -5,7 +5,7 @@ import ReactCrop, { type Crop } from "react-image-crop"
 import "react-image-crop/dist/ReactCrop.css"
 import { UploadCloud, X } from "lucide-react"
 
-export function LabelInputFile({ id, label, accept, onChange }: LabelInputFileProps) {
+export function LabelInputFile({ id, label, accept, onChange, enableCrop = true }: LabelInputFileProps) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [cropModalOpen, setCropModalOpen] = useState(false)
@@ -27,10 +27,18 @@ export function LabelInputFile({ id, label, accept, onChange }: LabelInputFilePr
   }, [selectedFile])
 
   const handleChange = (file: File | null) => {
-    if (file && file.type.startsWith("image/")) {
+    if (!file) {
+      setSelectedFile(null)
+      onChange(null)
+      return
+    }
+
+    // 🧩 Se for imagem e o corte estiver habilitado → abre o modal
+    if (file.type.startsWith("image/") && enableCrop) {
       setSelectedFile(file)
       setCropModalOpen(true)
     } else {
+      // 🔹 Se for vídeo ou crop desativado, passa direto
       setSelectedFile(file)
       onChange(file)
     }
@@ -45,8 +53,7 @@ export function LabelInputFile({ id, label, accept, onChange }: LabelInputFilePr
     canvas.width = completedCrop.width!
     canvas.height = completedCrop.height!
     const ctx = canvas.getContext("2d")!
-
-    ctx.imageSmoothingQuality = "high";
+    ctx.imageSmoothingQuality = "high"
 
     ctx.drawImage(
       imageRef,
@@ -60,8 +67,12 @@ export function LabelInputFile({ id, label, accept, onChange }: LabelInputFilePr
       completedCrop.height!
     )
 
-    const blob: Blob = await new Promise((resolve) => canvas.toBlob((b) => resolve(b!), "image/png", 1.0))
-    const croppedFile = new File([blob], selectedFile?.name || "cropped.png", { type: "image/png" })
+    const blob: Blob = await new Promise((resolve) =>
+      canvas.toBlob((b) => resolve(b!), "image/png", 1.0)
+    )
+    const croppedFile = new File([blob], selectedFile?.name || "cropped.png", {
+      type: "image/png",
+    })
 
     setCropModalOpen(false)
     setSelectedFile(croppedFile)
@@ -89,7 +100,8 @@ export function LabelInputFile({ id, label, accept, onChange }: LabelInputFilePr
       {previewUrl && (
         <div className="relative group">
           {isImage && (
-            <img loading="lazy"
+            <img
+              loading="lazy"
               src={previewUrl}
               alt="preview"
               className="w-full max-h-48 object-contain rounded border"
@@ -111,21 +123,21 @@ export function LabelInputFile({ id, label, accept, onChange }: LabelInputFilePr
         </div>
       )}
 
-      {cropModalOpen && (
+      {enableCrop && cropModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-lg w-full max-w-3xl p-4 flex flex-col">
-            <div className="flex-1 flex items-center justify-center bg-gray-900 rounded relative ">
+            <div className="flex-1 flex items-center justify-center bg-gray-900 rounded relative">
               <ReactCrop
                 crop={crop}
                 onChange={(c) => setCrop(c)}
                 onComplete={(c) => setCompletedCrop(c)}
                 keepSelection
-                // 🟢 NO aspect ratio → freeform crop
-                ruleOfThirds={true}
+                ruleOfThirds
                 minWidth={10}
                 minHeight={10}
               >
-                <img loading="lazy"
+                <img
+                  loading="lazy"
                   src={previewUrl!}
                   onLoad={(e) => setImageRef(e.currentTarget)}
                   className="object-contain"
@@ -155,9 +167,11 @@ export function LabelInputFile({ id, label, accept, onChange }: LabelInputFilePr
     </div>
   )
 }
+
 interface LabelInputFileProps {
   id: string
   label: string
   accept: string
   onChange: (file: File | null) => void
+  enableCrop?: boolean 
 }

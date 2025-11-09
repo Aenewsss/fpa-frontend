@@ -464,3 +464,60 @@ html {
   width: 30px;
   height: 30px;
 }
+
+.last-news-img {
+  width: 500px;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border-radius: 8px;
+  max-width: unset !important;
+  max-height: unset !important;
+  min-width: unset !important;
+  min-height: unset !important;
+  height: unset !important;
+}
+
+.post-img-thumb{
+  width: 100%;
+  /* aspect-ratio: 3 / 2; */
+  /* object-fit: cover; */
+  border-radius: 8px;
+  max-width: unset !important;
+  max-height: unset !important;
+  min-width: unset !important;
+  min-height: unset !important;
+  height: unset !important;
+}
+
+@media screen and (max-width: 640px) {
+  .last-news-img {
+    width: 100% !important;
+  } 
+}
+
+.animate-float{ 
+  animation: animate-float 1s infinite alternate;
+}
+
+@keyframes animate-float {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-20px)
+  }
+}
+
+@keyframes progress-fill {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.animate-progress {
+  animation: progress-fill 10s linear forwards;
+}

@@ -56,9 +56,10 @@ export default function PautaPage() {
             <Card>
                 <CardContent className="px-6 flex flex-col gap-4">
                     <LabelInputFile
+                        enableCrop={false}
                         id="pauta-upload"
-                        accept="pdf/*"
-                        label="Nova pauta (arquivo PDF)"
+                        accept="image/*"
+                        label="Nova pauta"
                         onChange={(file) => {
                             setFile(file)
 
@@ -68,7 +69,7 @@ export default function PautaPage() {
                             setPreviewUrl(preview)
                         }}
                     />
-                    <p className="text-sm text-gray-500">Selecione o arquivo PDF da nova pauta para atualizar.</p>
+                    <p className="text-sm text-gray-500">Selecione a imagem da nova pauta para atualizar.</p>
                 </CardContent>
                 <CardFooter className="flex justify-end">
                     <Button onClick={handleUpload} disabled={!file || isLoading}>

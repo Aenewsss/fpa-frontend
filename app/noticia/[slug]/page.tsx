@@ -62,7 +62,7 @@ export default function Page({ params }: PageProps) {
                 (!currentPost || currentPost.id != currentPostId)
                     ? <PostPageSkeleton />
                     : <div>
-                        <div className='max-w-[800px] mx-auto px-4 my-10'>
+                        <div className='max-w-[800px] mx-auto px-4 my-10 relative'>
                             <h1 className="lg:text-5xl text-4xl font-bold mb-4">{currentPost?.postTitle}</h1>
                             <h2 className="text-2xl text-[#000000cb]  mb-4">{currentPost?.summary}</h2>
 
@@ -73,7 +73,7 @@ export default function Page({ params }: PageProps) {
                             <img loading="lazy"
                                 src={currentPost.thumbnailUrl}
                                 alt={currentPost.postTitle}
-                                className="rounded-lg mb-6 w-full h-full"
+                                className="rounded-lg mb-6 post-img-thumb"
                             />
 
                             <article>
@@ -91,6 +91,16 @@ export default function Page({ params }: PageProps) {
                                     )}
                                 </div>
                             }
+
+                            <img loading="lazy"
+                                width={16} height={16} src='/wpp.svg'
+                                onClick={() => {
+                                    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(`${process.env.NEXT_PUBLIC_FRONT_URL}/noticia/${currentPost.id}`)}`;
+                                    window.open(whatsappUrl, '_blank');
+                                }}
+                                title='Compartilhar'
+                                className="h-[50px] w-[50px] text-green-600 cursor-pointer fixed bottom-4 right-4 bg-white p-2 rounded-lg animate-float"
+                            />
 
                         </div>
                         <LastNews isHome={false} internalPage category={currentPost.postCategoryId} />

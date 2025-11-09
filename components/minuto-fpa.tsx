@@ -7,12 +7,12 @@ export default function FatoEmFoco({ relevants }: { relevants: any[] }) {
 
   return (
     <section id="fato-em-foco" className="lg:py-12 pb-10 px-4">
-      <div className="max-w-[1300px] mx-auto bg-white 2xl:p-8 p-4 rounded-2xl shadow-md">
+      <div className="max-w-[1300px] mx-auto bg-white 2xl:p-8 p-4 rounded-2xl shadow-md relative">
         <div className="space-y-4">
           <div className="flex justify-between items-center">
             <div>
               <h2 className="text-3xl font-bold text-[#1C9658]">Minuto FPA</h2>
-              <p id="artigos" className="text-gray-600">Acompanhe nossas notícias em 1 minuto</p>
+              <p className="text-gray-600">Acompanhe nossas notícias em 1 minuto</p>
             </div>
           </div>
 
@@ -26,7 +26,9 @@ export default function FatoEmFoco({ relevants }: { relevants: any[] }) {
               />
             ))}
           </ContentSlider>
+
         </div>
+        <div id="artigos" className="invisible p-1 absolute top-1/2 -translate-y-1/2">t</div>
       </div>
     </section>
   )
