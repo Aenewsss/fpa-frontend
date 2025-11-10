@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import ReactCrop, { type Crop } from "react-image-crop"
 import "react-image-crop/dist/ReactCrop.css"
-import { UploadCloud, X } from "lucide-react"
+import { UploadCloud, X, Scissors } from "lucide-react"
 
 export function LabelInputFile({ id, label, accept, onChange, enableCrop = true }: LabelInputFileProps) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
@@ -33,13 +33,9 @@ export function LabelInputFile({ id, label, accept, onChange, enableCrop = true 
       return
     }
 
-    // 🧩 Se for imagem e o corte estiver habilitado → abre o modal
-    if (file.type.startsWith("image/") && enableCrop) {
-      setSelectedFile(file)
-      setCropModalOpen(true)
-    } else {
-      // 🔹 Se for vídeo ou crop desativado, passa direto
-      setSelectedFile(file)
+    // Apenas define o arquivo, sem abrir o crop
+    setSelectedFile(file)
+    if (!file.type.startsWith("image/") || !enableCrop) {
       onChange(file)
     }
   }
@@ -114,15 +110,31 @@ export function LabelInputFile({ id, label, accept, onChange, enableCrop = true 
               className="w-full max-h-48 object-contain rounded border"
             />
           )}
-          <button
-            onClick={() => handleChange(null)}
-            className="cursor-pointer absolute top-1 right-1 p-1 bg-black bg-opacity-50 rounded-full text-white hover:bg-opacity-80"
-          >
-            <X className="w-4 h-4" />
-          </button>
+
+          {/* Botões sobre a imagem */}
+          <div className="absolute top-1 right-1 flex gap-2">
+            {enableCrop && isImage && (
+              <button
+                onClick={() => setCropModalOpen(true)}
+                className="cursor-pointer p-1 bg-black bg-opacity-50 rounded-full text-white hover:bg-opacity-80"
+                title="Cortar imagem"
+              >
+                <Scissors className="w-4 h-4" />
+              </button>
+            )}
+
+            <button
+              onClick={() => handleChange(null)}
+              className="cursor-pointer p-1 bg-black bg-opacity-50 rounded-full text-white hover:bg-opacity-80"
+              title="Remover imagem"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
         </div>
       )}
 
+      {/* Modal de corte */}
       {enableCrop && cropModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-lg w-full max-w-3xl p-4 flex flex-col">
@@ -173,5 +185,5 @@ interface LabelInputFileProps {
   label: string
   accept: string
   onChange: (file: File | null) => void
-  enableCrop?: boolean 
+  enableCrop?: boolean
 }
