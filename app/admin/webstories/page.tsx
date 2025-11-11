@@ -254,7 +254,7 @@ function SortableCard({
                                 <Edit3 className="w-4 h-4 mr-2" /> Editar
                             </Button>
                         </AlertDialogTrigger>
-                        <AlertDialogContent className="md:max-w-[80%] max-w-full max-h-[90vh] overflow-y-auto">
+                        <AlertDialogContent className="z-[9999999999999999] md:max-w-[80%] max-w-full max-h-[90vh] overflow-y-auto z-[9999999999999999]">
                             <AlertDialogHeader>
                                 <AlertDialogTitle>Editar Webstory</AlertDialogTitle>
                             </AlertDialogHeader>
@@ -282,6 +282,7 @@ function SortableCard({
                                                 label={`Slide ${idx + 1}`}
                                                 accept="image/*"
                                                 onChange={(f) => {
+                                                    console.log(f)
                                                     const updated = [...slides]
                                                     updated[idx].file = f
                                                     setSlides(updated)
@@ -318,7 +319,7 @@ function SortableCard({
                                                     <Trash2 className="w-4 h-4" />
                                                 </Button>
                                             </AlertDialogTrigger>
-                                            <AlertDialogContent>
+                                            <AlertDialogContent className="z-[9999999999999999]">
                                                 <AlertDialogHeader>
                                                     <AlertDialogTitle>
                                                         Deseja realmente remover este slide?
@@ -377,7 +378,7 @@ function SortableCard({
                                 <Trash2 className="w-4 h-4" />
                             </Button>
                         </AlertDialogTrigger>
-                        <AlertDialogContent>
+                        <AlertDialogContent className="z-[9999999999999999]">
                             <AlertDialogHeader>
                                 <AlertDialogTitle>Deseja realmente excluir esta webstory?</AlertDialogTitle>
                             </AlertDialogHeader>

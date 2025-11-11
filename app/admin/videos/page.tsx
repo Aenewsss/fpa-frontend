@@ -158,7 +158,7 @@ function SortableCard({
                             </Button>
                         </AlertDialogTrigger>
 
-                        <AlertDialogContent>
+                        <AlertDialogContent className="z-[9999999999999999]">
                             <AlertDialogHeader>
                                 <AlertDialogTitle>
                                     Deseja realmente excluir esse vídeo?

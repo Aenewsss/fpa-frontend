@@ -134,7 +134,7 @@ export default function BannerPage() {
             </DndContext>
 
             <AlertDialog open={!!bannerToDelete} onOpenChange={(open) => !open && setBannerToDelete(null)}>
-                <AlertDialogContent>
+                <AlertDialogContent className="z-[9999999999999999]">
                     <AlertDialogHeader>
                         <AlertDialogTitle>Deseja realmente excluir esse banner?</AlertDialogTitle>
                     </AlertDialogHeader>
@@ -205,7 +205,7 @@ function SortableCard({ banner, onDelete, refresh }: { banner: any, onDelete: ()
                                 <Edit3 className="w-4 h-4 mr-2" /> Editar
                             </Button>
                         </AlertDialogTrigger>
-                        <AlertDialogContent className="md:max-w-[50%] max-w-full">
+                        <AlertDialogContent className="z-[9999999999999999] md:max-w-[50%] max-w-full">
                             <AlertDialogHeader>
                                 <AlertDialogTitle>Editar Banner</AlertDialogTitle>
                             </AlertDialogHeader>
@@ -244,7 +244,7 @@ function SortableCard({ banner, onDelete, refresh }: { banner: any, onDelete: ()
                                 <Trash2 className="w-4 h-4" />
                             </Button>
                         </AlertDialogTrigger>
-                        <AlertDialogContent>
+                        <AlertDialogContent className="z-[9999999999999999]">
                             <AlertDialogHeader>
                                 <AlertDialogTitle>Deseja realmente excluir esse banner?</AlertDialogTitle>
                             </AlertDialogHeader>

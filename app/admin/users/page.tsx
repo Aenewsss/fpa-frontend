@@ -98,7 +98,7 @@ function UserCard({ user, refresh }: { user: any; refresh: () => void }) {
                             <Edit3 className="w-4 h-4 mr-2" /> Editar
                         </Button>
                     </AlertDialogTrigger>
-                    <AlertDialogContent className="md:max-w-[50%] max-w-full">
+                    <AlertDialogContent className="z-[9999999999999999] md:max-w-[50%] max-w-full">
                         <AlertDialogHeader>
                             <AlertDialogTitle>Editar usuário</AlertDialogTitle>
                         </AlertDialogHeader>
@@ -152,7 +152,7 @@ function UserCard({ user, refresh }: { user: any; refresh: () => void }) {
                             <Trash2 className="w-4 h-4" />
                         </Button>
                     </AlertDialogTrigger>
-                    <AlertDialogContent className="md:max-w-[50%] max-w-full">
+                    <AlertDialogContent className="z-[9999999999999999] md:max-w-[50%] max-w-full">
                         <AlertDialogHeader>
                             <AlertDialogTitle>Excluir usuário?</AlertDialogTitle>
                         </AlertDialogHeader>

@@ -169,7 +169,7 @@ function SortableCard({ author, refresh }: { author: any, refresh: () => void })
                             </Button>
                         </AlertDialogTrigger>
 
-                        <AlertDialogContent className="md:max-w-[50%] max-w-full">
+                        <AlertDialogContent className="z-[9999999999999999] md:max-w-[50%] max-w-full">
                             <AlertDialogHeader>
                                 <AlertDialogTitle>Editar parlamentar</AlertDialogTitle>
                             </AlertDialogHeader>
@@ -218,7 +218,7 @@ function SortableCard({ author, refresh }: { author: any, refresh: () => void })
                             </Button>
                         </AlertDialogTrigger>
 
-                        <AlertDialogContent className="md:max-w-[50%] max-w-full">
+                        <AlertDialogContent className="z-[9999999999999999] md:max-w-[50%] max-w-full">
                             <AlertDialogHeader>
                                 <AlertDialogTitle>Confirmar exclusão</AlertDialogTitle>
                             </AlertDialogHeader>

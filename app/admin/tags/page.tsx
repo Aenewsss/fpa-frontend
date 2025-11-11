@@ -117,7 +117,7 @@ function SortableCard({ tag, onDelete }: { tag: any, onDelete: () => void }) {
                                 <Trash2 className="w-4 h-4" />
                             </Button>
                         </AlertDialogTrigger>
-                        <AlertDialogContent className="max-w-[300px]">
+                        <AlertDialogContent className="z-[9999999999999999] max-w-[300px]">
                             <AlertDialogHeader>
                                 <AlertDialogTitle>Deseja realmente excluir?</AlertDialogTitle>
                             </AlertDialogHeader>

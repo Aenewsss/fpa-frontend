@@ -419,7 +419,7 @@ export function PostCard({ post, onDelete, onEdit }: PostCardProps) {
             </Button>
           </AlertDialogTrigger>
 
-          <AlertDialogContent className="max-w-md">
+          <AlertDialogContent className="z-[9999999999999999] max-w-md">
             <AlertDialogHeader>
               <AlertDialogTitle>Excluir post</AlertDialogTitle>
               <AlertDialogDescription>

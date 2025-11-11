@@ -237,7 +237,7 @@ function SortableCard({
                                     <Edit3 className="w-4 h-4" />
                                 </Button>
                             </AlertDialogTrigger>
-                            <AlertDialogContent className="md:max-w-[50%] max-w-full">
+                            <AlertDialogContent className="z-[9999999999999999] md:max-w-[50%] max-w-full">
                                 <AlertDialogHeader>
                                     <AlertDialogTitle>Editar categoria</AlertDialogTitle>
                                 </AlertDialogHeader>
@@ -307,7 +307,7 @@ function SortableCard({
                                     <Trash2 className="w-4 h-4" />
                                 </Button>
                             </AlertDialogTrigger>
-                            <AlertDialogContent className="md:max-w-[50%] max-w-full">
+                            <AlertDialogContent className="z-[9999999999999999] md:max-w-[50%] max-w-full">
                                 <AlertDialogHeader>
                                     <AlertDialogTitle>Deseja realmente excluir?</AlertDialogTitle>
                                 </AlertDialogHeader>
