@@ -40,7 +40,7 @@ export default function Header({ isArticle, category, categoryColor, categoryId 
 
     useEffect(() => {
         fetchLiveUrl();
-        fetchCategories()
+        fetchCategories({limit: 20})
     }, []);
 
     async function fetchLiveUrl() {
@@ -75,9 +75,8 @@ export default function Header({ isArticle, category, categoryColor, categoryId 
                             <span className="font-semibold">Categorias</span>
                             {isCategoriesOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
                         </button>
-                        <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isCategoriesOpen ? 'max-h-96' : 'max-h-0'}`}>
+                        <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isCategoriesOpen ? 'max-h-[800px]' : 'max-h-0'}`}>
                             <ul className="pl-4 mt-2 space-y-2">
-                                {/* Exemplo fixo — substitua por .map futuramente */}
                                 {categories.map(cat => <li key={cat.id}><Link href={`/categoria/${cat.id}`} className="block hover:scale-105">{cat.name}</Link></li>)}
                             </ul>
                         </div>

@@ -191,6 +191,7 @@ export default function PostsAdminPage() {
     } finally {
       setLoading(false)
       setShowPostEditor(false)
+      window.location.reload()
     }
   }
 

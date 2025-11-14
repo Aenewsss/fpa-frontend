@@ -95,6 +95,7 @@ export default function WebstoriesPage() {
         const newOrder = arrayMove(orderedWebstories, oldIndex, newIndex)
         setOrderedWebstories(newOrder)
         await reorderWebstories(active.id, newIndex)
+            .then(_ => showToast({ type: 'success', children: 'Ordem atualizada' }))
         fetchWebStories()
     }
 
