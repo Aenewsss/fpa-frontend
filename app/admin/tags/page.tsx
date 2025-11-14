@@ -34,7 +34,7 @@ export default function TagPage() {
     const { fetchTags, tags, createTag, deleteTag, } = useContentStore()
 
     useEffect(() => {
-        fetchTags()
+        fetchTags({ limit: 100 })
     }, [])
 
     const handleUpload = async () => {
@@ -42,7 +42,7 @@ export default function TagPage() {
 
         await createTag(form)
         setForm(formInitialState)
-        fetchTags()
+        fetchTags({ limit: 100 })
     }
 
     return (
@@ -104,7 +104,7 @@ function SortableCard({ tag, onDelete }: { tag: any, onDelete: () => void }) {
             <Card className="p-0">
                 <CardContent className="relative flex flex-col gap-4 p-4">
                     <p className="font-semibold text-sm">{tag.name}</p>
-                    <p style={{color: tag.color}} className="font-semibold text-sm">{tag.slug}</p>
+                    <p style={{ color: tag.color }} className="font-semibold text-sm">{tag.slug}</p>
                     <p className="text-xs text-muted-foreground">{tag.description}</p>
                     {tag.iconUrl && (
                         <img loading="lazy" src={tag.iconUrl} alt="ícone" className="w-20 h-20 object-contain" />

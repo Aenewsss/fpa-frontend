@@ -60,7 +60,7 @@ export default function WebstoriesPage() {
     const sensors = useSensors(useSensor(PointerSensor))
 
     useEffect(() => {
-        fetchWebStories()
+        fetchWebStories({ limit: 20 })
     }, [])
 
     useEffect(() => {
@@ -76,7 +76,7 @@ export default function WebstoriesPage() {
             setDescription("")
             setSlides([])
             showToast({ type: "success", children: "Webstory criada com sucesso!" })
-            fetchWebStories()
+            fetchWebStories({ limit: 20 })
         } catch (error) {
             console.error(error)
             showToast({ type: "error", children: "Erro ao criar webstory" })
@@ -96,7 +96,7 @@ export default function WebstoriesPage() {
         setOrderedWebstories(newOrder)
         await reorderWebstories(active.id, newIndex)
             .then(_ => showToast({ type: 'success', children: 'Ordem atualizada' }))
-        fetchWebStories()
+        fetchWebStories({ limit: 20 })
     }
 
     return (

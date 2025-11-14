@@ -49,7 +49,7 @@ export default function CategoryPage() {
     const sensors = useSensors(useSensor(PointerSensor))
 
     useEffect(() => {
-        fetchCategories()
+        fetchCategories({ limit: 100 })
     }, [])
 
     useEffect(() => {
@@ -63,7 +63,7 @@ export default function CategoryPage() {
         try {
             await createCategory(form)
             setForm(formInitialState)
-            fetchCategories()
+            fetchCategories({ limit: 100 })
             showToast({ type: "success", children: "Categoria criada com sucesso" })
         } catch (error) {
             showToast({ type: "error", children: "Erro ao criar categoria" })
@@ -80,7 +80,7 @@ export default function CategoryPage() {
         const newOrder = arrayMove(orderedCategories, oldIndex, newIndex)
         setOrderedCategories(newOrder)
         await reorderCategories(active.id, newIndex)
-        fetchCategories()
+        fetchCategories({ limit: 100 })
     }
 
     return (
@@ -172,7 +172,7 @@ function SortableCard({
     refresh,
 }: {
     category: any
-    onDelete: () =>  Promise<void>
+    onDelete: () => Promise<void>
     onUpdate: (data: UpdateCategoryData) => Promise<void>
     refresh: () => void
 }) {

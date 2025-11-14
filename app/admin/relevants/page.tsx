@@ -39,7 +39,7 @@ export default function RelevantsPage() {
     const sensors = useSensors(useSensor(PointerSensor))
 
     useEffect(() => {
-        fetchRelevants()
+        fetchRelevants({ limit: 20 })
     }, [])
 
     useEffect(() => {
@@ -54,7 +54,7 @@ export default function RelevantsPage() {
             await createRelevant(form)
             showToast({ type: "success", children: "Vídeo enviado com sucesso!" })
             setForm(formInitialState)
-            fetchRelevants()
+            fetchRelevants({ limit: 20 })
         } catch (err) {
             console.error(err)
             showToast({ type: "error", children: "Erro ao enviar vídeo" })
@@ -74,7 +74,7 @@ export default function RelevantsPage() {
         setOrderedRelevants(newOrder)
         await reorderRelevants(active.id, newIndex)
             .then(_ => showToast({ type: 'success', children: 'Ordem atualizada' }))
-        fetchRelevants()
+        fetchRelevants({ limit: 20 })
     }
 
     return (
