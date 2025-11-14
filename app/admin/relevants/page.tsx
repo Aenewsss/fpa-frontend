@@ -73,6 +73,7 @@ export default function RelevantsPage() {
         const newOrder = arrayMove(orderedRelevants, oldIndex, newIndex)
         setOrderedRelevants(newOrder)
         await reorderRelevants(active.id, newIndex)
+            .then(_ => showToast({ type: 'success', children: 'Ordem atualizada' }))
         fetchRelevants()
     }
 
