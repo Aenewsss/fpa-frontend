@@ -376,6 +376,7 @@ export const useContentStore = create<ContentState>((set, get) => ({
     try {
       const form = new FormData()
       form.append("postTitle", data.postTitle)
+      form.append("articleAuthorId", data.articleAuthorId)
       form.append("postCategoryId", data.postCategoryId)
       form.append("postStatus", data.postStatus)
       form.append("isFeatured", data.isFeatured ? 'true' : 'false')

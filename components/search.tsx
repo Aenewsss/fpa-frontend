@@ -58,7 +58,7 @@ export default function SearchToggle() {
                         animate={{ scaleX: 1, opacity: 1 }}
                         exit={{ scaleX: 0, opacity: 0 }}
                         transition={{ duration: 0.25, ease: 'easeInOut' }}
-                        className={`md:absolute right-0 origin-right flex items-center gap-2 md:bg-white md:border-none border-white border-1 px-3 py-2 md:rounded-full rounded-lg shadow-md w-[76vw] lg:max-w-[18vw] ${isMobile? 'w-full':`max-w-[20vw]`}`}
+                        className={`md:absolute right-0 origin-right flex items-center gap-2 md:bg-white md:border-none border-white border-1 px-3 py-2 md:rounded-full rounded-lg shadow-md w-[76vw] lg:max-w-[400px] ${isMobile? 'w-full':`max-w-[20vw]`}`}
                     >
                         <Search className="h-5 w-5 md:text-gray-500" />
                         <input

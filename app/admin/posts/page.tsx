@@ -44,6 +44,7 @@ import { set } from "idb-keyval"
 const formInitialState: CreatePostData = {
   postTitle: "",
   postCategoryId: "",
+  articleAuthorId: "",
   postContent: {},
   postStatus: PostStatusEnum.DRAFT,
   summary: "",
@@ -70,6 +71,8 @@ export default function PostsAdminPage() {
     pushCurrentPostFiles,
     currentPostFiles,
     setLoading,
+    fetchAuthors,
+    authors
   } = useContentStore()
 
   const [orderedPosts, setOrderedPosts] = useState<any[]>([])
@@ -158,7 +161,8 @@ export default function PostsAdminPage() {
   useEffect(() => {
     getPosts1()
     fetchTags()
-    fetchCategories()
+    fetchCategories({ limit: 100 })
+    fetchAuthors()
   }, [])
 
   useEffect(() => {
@@ -236,11 +240,11 @@ export default function PostsAdminPage() {
             onChange={(e) => setForm({ ...form, summary: e.target.value })}
           />
 
-          <Input
+          {/* <Input
             placeholder="Slug (URL amigável)"
             value={form.slug}
             onChange={(e) => setForm({ ...form, slug: e.target.value })}
-          />
+          /> */}
 
           <div className="flex gap-2 items-center">
             <label>Matéria em destaque?</label>
@@ -278,7 +282,21 @@ export default function PostsAdminPage() {
             ))}
           </select>
 
+          <select
+            value={form.articleAuthorId}
+            onChange={(e) => setForm({ ...form, articleAuthorId: e.target.value })}
+            className="cursor-pointer border rounded-md px-3 py-2 text-sm text-gray-700"
+          >
+            <option value="">Vincular parlamentar (artigo)</option>
+            {authors.filter(a => a.name).map((a) => (
+              <option key={a.id} value={a.id}>
+                {a.name}
+              </option>
+            ))}
+          </select>
+
           <MultiSelect
+            placeholder="Selecionar tags"
             selected={form.relatedTags || []}
             onChange={(tags) => setForm({ ...form, relatedTags: tags })}
             options={tags.map((t) => ({ label: t.name, value: t.id }))}

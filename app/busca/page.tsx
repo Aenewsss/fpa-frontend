@@ -3,17 +3,18 @@ import LastNews from "@/components/last-news";
 import Footer from "@/components/ui/footer";
 import Header from "@/components/ui/header";
 import { useContentStore } from "@/lib/content-store";
-import { use, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 
-export default function Page({ params }: { params: { q: string } }) {
-    const unwrappedParams = use(params as any);
-    const { q: query } = unwrappedParams as any;
+export default function Page() {
+    const searchParams = useSearchParams()
 
     const { fetchPosts, posts, postsLoading } = useContentStore()
 
     useEffect(() => {
-        fetchPosts({ search: query })
-    }, [query]);
+        const searchText = searchParams.get("q")
+        if (searchText) fetchPosts({ search: searchText })
+    }, [searchParams]);
 
     return (
         <main>

@@ -44,6 +44,8 @@ export default function Home() {
   const pathname = usePathname();
   const [hash, setHash] = useState<string | null>(null);
 
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
   useEffect(() => {
     // Captura o hash da URL no cliente
     const handleHash = () => setHash(window.location.hash);
@@ -53,7 +55,7 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if(!hash) return
+    if (!hash) return
     if (hash.includes("#")) {
       document.querySelector(hash)?.scrollIntoView({ behavior: "smooth" });
     }
@@ -112,6 +114,7 @@ export default function Home() {
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % banners.length)
+    resetTimer()
   }
 
   const prevSlide = () => {
@@ -139,16 +142,27 @@ export default function Home() {
     }
   }, [])
 
-  // ⏱️ Autoplay
+  const startTimer = () => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    intervalRef.current = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % banners.length);
+    }, 10000);
+  };
+
+  const resetTimer = () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      startTimer(); // restart from zero
+    }
+  };
+
   useEffect(() => {
-    if (!isVisible) return
-
-    const interval = setInterval(() => {
-      nextSlide()
-    }, 5000)
-
-    return () => clearInterval(interval)
-  }, [isVisible, banners.length])
+    if (!isVisible) return;
+    startTimer();
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [isVisible, banners.length]);
 
   return (
     <div className="min-h-screen bg-[#F9F9F9]">
@@ -183,10 +197,13 @@ export default function Home() {
         <div className="absolute inset-0 bg-black opacity-50 z-20" />
 
         {/* Texto acima das imagens */}
-        <div className="relative z-30 flex items-end justify-center h-full text-white text-center lg:px-4 px-[30px]">
+        <div className="relative z-30 flex items-center flex-col justify-end h-full text-white text-center lg:px-4 px-[30px]">
           <h1 className="text-2xl md:text-4xl font-bold max-w-6xl leading-tight">
             {banners[currentSlide]?.text}
           </h1>
+          <span className="text-sm text-gray-200">
+            Banner {currentSlide + 1} / {banners.length}
+          </span>
         </div>
 
         {/* Navegação */}

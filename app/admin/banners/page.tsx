@@ -72,6 +72,7 @@ export default function BannerPage() {
             showToast({ type: "error", children: "Erro ao criar banner" })
         } finally {
             setIsLoading(false)
+            window.location.reload()
         }
     }
 

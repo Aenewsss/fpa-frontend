@@ -32,6 +32,7 @@ export interface Post {
 export interface CreatePostData {
   postTitle: string
   postContent: object
+  articleAuthorId: string
   postStatus: PostStatusEnum
   postCategoryId: string
   relatedTags?: string[]
