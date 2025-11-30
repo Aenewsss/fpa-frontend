@@ -69,6 +69,7 @@ export default function CategoryPage() {
             showToast({ type: "error", children: "Erro ao criar categoria" })
         } finally {
             setIsLoading(false)
+            window.location.reload()
         }
     }
 

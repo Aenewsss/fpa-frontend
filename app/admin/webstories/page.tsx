@@ -82,6 +82,8 @@ export default function WebstoriesPage() {
             showToast({ type: "error", children: "Erro ao criar webstory" })
         } finally {
             setIsLoading(false)
+            window.location.reload()
+
         }
     }
 

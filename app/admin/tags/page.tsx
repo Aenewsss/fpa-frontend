@@ -43,6 +43,8 @@ export default function TagPage() {
         await createTag(form)
         setForm(formInitialState)
         fetchTags({ limit: 100 })
+            window.location.reload()
+
     }
 
     return (

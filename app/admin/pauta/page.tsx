@@ -46,6 +46,8 @@ export default function PautaPage() {
             showToast({ type: 'error', children: 'Erro ao atualizar pauta.' })
         } finally {
             setIsLoading(false)
+            window.location.reload()
+
         }
     }
 

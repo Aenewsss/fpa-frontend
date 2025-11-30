@@ -93,6 +93,7 @@ export default function Page() {
             console.error("Erro ao atualizar página:", error)
         } finally {
             setIsLoading(false)
+            window.location.reload()
         }
     }
 

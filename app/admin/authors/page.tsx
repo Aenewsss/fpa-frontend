@@ -50,6 +50,7 @@ export default function AuthorPage() {
             showToast({ type: 'error', children: 'Erro ao criar parlamentar' })
         } finally {
             setIsLoading(false)
+            window.location.reload()
         }
     }
 

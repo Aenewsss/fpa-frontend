@@ -34,6 +34,7 @@ export default function MagazinePage() {
             showToast({ type: "error", children: "Erro ao atualizar revista" })
         } finally {
             setIsLoading(false)
+            window.location.reload()
         }
     }
 

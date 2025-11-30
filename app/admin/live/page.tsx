@@ -41,6 +41,7 @@ export default function LivePage() {
             console.error("Erro ao atualizar página:", error)
         } finally {
             setIsLoading(false)
+            window.location.reload()
         }
     }
 

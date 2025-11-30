@@ -319,7 +319,7 @@ export default function PostsAdminPage() {
             />
           )}
         </CardContent>
-        <CardFooter className="flex justify-between">
+        <CardFooter className="flex justify-between fixed bottom-20 right-0 gap-4 z-[99999999999999]">
           {(editingPost || showPostEditor) && (
             <Button variant="secondary" onClick={() => {
               setEditingPost(null)

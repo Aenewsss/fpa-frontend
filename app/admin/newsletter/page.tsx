@@ -26,7 +26,10 @@ export default function Page() {
                 setForm(formInitialState)
             })
             .catch(e => showToast({ type: 'error', children: "Erro ao enviar newsletter" }))
-            .finally(() => setIsLoading(false))
+            .finally(() => {
+                setIsLoading(false)
+            window.location.reload()
+            })
     }
 
     return (

@@ -37,7 +37,7 @@ export default function RelevantsPage() {
     const [orderedRelevants, setOrderedRelevants] = useState<any[]>([])
     const [isLoading, setIsLoading] = useState(false)
     const sensors = useSensors(useSensor(PointerSensor))
-
+    console.log(form)
     useEffect(() => {
         fetchRelevants({ limit: 20 })
     }, [])
@@ -60,6 +60,7 @@ export default function RelevantsPage() {
             showToast({ type: "error", children: "Erro ao enviar vídeo" })
         } finally {
             setIsLoading(false)
+            window.location.reload()
         }
     }
 
@@ -97,7 +98,10 @@ export default function RelevantsPage() {
                         id="video-upload"
                         label="Selecionar vídeo"
                         accept="video/*"
-                        onChange={(file) => setForm({ ...form, videoFile: file })}
+                        onChange={(file) => {
+                            console.log(file)
+                            setForm({ ...form, videoFile: file })
+                        }}
                     />
                     <LabelInputFile
                         id="cover-upload"

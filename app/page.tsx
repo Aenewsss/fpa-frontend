@@ -201,9 +201,21 @@ export default function Home() {
           <h1 className="text-2xl md:text-4xl font-bold max-w-6xl leading-tight">
             {banners[currentSlide]?.text}
           </h1>
-          <span className="text-sm text-gray-200">
-            Banner {currentSlide + 1} / {banners.length}
-          </span>
+
+          {/* Dot Indicators */}
+          <div className="flex gap-2 mt-3">
+            {banners.map((_, index) => (
+              <div
+                key={index}
+                className={`w-2 h-2 rounded-full transition-all duration-300
+                  ${index === currentSlide
+                    ? "bg-white scale-125 shadow-lg"
+                    : "bg-white/40 hover:bg-white/60"
+                  }
+            `}
+              />
+            ))}
+          </div>
         </div>
 
         {/* Navegação */}

@@ -35,9 +35,7 @@ export function LabelInputFile({ id, label, accept, onChange, enableCrop = true 
 
     // Apenas define o arquivo, sem abrir o crop
     setSelectedFile(file)
-    if (file.type.startsWith("image/")) {
-      onChange(file)
-    }
+    onChange(file)
   }
 
   const handleSaveCrop = async () => {

@@ -55,6 +55,8 @@ export default function VideoPage() {
         setDescription("")
         setEmbed("")
         fetchVideos()
+            window.location.reload()
+
     }
 
     return (
